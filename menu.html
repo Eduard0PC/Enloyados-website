@@ -21,34 +21,60 @@
         <h1>ENLOYADOS</h1>
       </a>
     </div>
-    <div class="nav">
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <div class="nav" id="navMenu">
       <a href="index.html">HOME</a>
       <a href="menu.html">MENU</a>
       <a href="about.html">QUIENES SOMOS</a>
       <a href="contact.html">CONTACTANOS</a>
+      <a href="login.html" id="nav-login-btn">INICIAR SESIÓN</a>
     </div>
   </header>
 
   <main class="menu">
     <h1>DESCUBRE LOS PLATILLOS QUE TENEMOS PARA TI</h1>
 
-    <!-- Contenedor donde el CMS inyectará el contenido del menú -->
-    <div class="dish-cont" id="cms-menu-container">
-      <!-- El CMS insertará aquí los elementos del menú dinámicamente -->
-      <!-- Ejemplo de estructura esperada:
-        <div class="dish-card">
-          <img class="dish-img" src="img/menu/ejemplo.jpg" alt="Nombre del platillo">
-          <h4>Nombre del platillo</h4>
-          <p>Descripción del platillo</p>
-          <p class="price">$Precio</p>
-        </div>
-      -->
+    <div class="dish-cont" id="menu-container">
+      <!-- Menu cards dynamically loaded from JavaScript simulated database -->
     </div>
   </main>
 
   <footer class="footer">
     <p>© 2025 ENLOYADOS — Todos los derechos reservados.</p>
   </footer>
+
+  <script src="js/db.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      renderPublicMenu();
+    });
+
+    function renderPublicMenu() {
+      const container = document.getElementById("menu-container");
+      if (!container) return;
+
+      const menu = getMenu();
+      if (menu.length === 0) {
+        container.parentElement.innerHTML = `
+          <h1>DESCUBRE LOS PLATILLOS QUE TENEMOS PARA TI</h1>
+          <p class="no-registros" style="text-align:center; font-size: 18px; margin-top: 20px;">No hay registros en el menú.</p>
+        `;
+        return;
+      }
+
+      container.innerHTML = menu.map(function (item) {
+        var imageSrc = getImageUrl(item.path);
+        return `
+          <div class="dish-card">
+            <img class="dish-img" src="${imageSrc}" alt="${item.nombre}">
+            <h4>${item.nombre}</h4>
+            <p>${item.desc}</p>
+            <p class="price">$${item.price}</p>
+          </div>
+        `;
+      }).join("");
+    }
+  </script>
 </body>
 
 </html>

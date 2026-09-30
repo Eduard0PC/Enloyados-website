@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="img/logo.png">
+
+  <link href="https://fonts.googleapis.com/css2?family=Yuji+Mai&family=Rampart+One&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Asimovian&family=Bitcount+Prop+Single:wght@100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
+
+  <title>USUARIOS - ENLOYADOS</title>
+</head>
+
+<body>
+
+  <header class="lados">
+    <div class="logo">
+      <a href="dashboard.html">
+        <img src="img/logo.png" alt="logo">
+        <h1>ENLOYADOS</h1>
+      </a>
+    </div>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <div class="nav" id="navMenu">
+      <a href="users.html">USUARIOS</a>
+      <a href="addmenu.html">MENU</a>
+      <a class="salir" href="#" onclick="logoutUser(); return false;">CERRAR SESIÓN</a>
+    </div>
+  </header>
+
+  <main class="users-page">
+
+    <h2>LISTA DE USUARIOS</h2>
+
+    <div class="botones lados">
+      <a href="users.html">Agregar Usuario</a>
+      <a class="activo" href="verusers.html">Ver Usuarios</a>
+    </div>
+
+    <div class="users_table_cont lados ancho" id="users-table-container">
+      <!-- Dynamically populated from JS -->
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 ENLOYADOS — Todos los derechos reservados.</p>
+  </footer>
+
+  <script src="js/db.js"></script>
+  <script>
+    requireAuth();
+
+    document.addEventListener("DOMContentLoaded", function () {
+      renderUsersTable();
+    });
+
+    function renderUsersTable() {
+      const container = document.getElementById("users-table-container");
+      if (!container) return;
+
+      const users = getUsers();
+
+      if (users.length === 0) {
+        container.innerHTML = '<p class="no-registros">No hay registros disponibles.</p>';
+        return;
+      }
+
+      let html = `
+        <table class="users_table">
+          <tr>
+            <th>ID</th>
+            <th>NOMBRE</th>
+            <th>EMAIL</th>
+            <th>CONTRASEÑA</th>
+            <th>ELIMINAR</th>
+          </tr>
+      `;
+
+      users.forEach(function (user) {
+        html += `
+          <tr>
+            <td>${user.id}</td>
+            <td>${user.name}</td>
+            <td>${user.email}</td>
+            <td>${user.password}</td>
+            <td>
+              <a href="#" onclick="validar(${user.id}); return false;">
+                <img class="delete" src="img/images.png" alt="eliminar">
+              </a>
+            </td>
+          </tr>
+        `;
+      });
+
+      html += `</table>`;
+      container.innerHTML = html;
+    }
+
+    function validar(id) {
+      var eliminar = confirm("¿Realmente quieres ELIMINAR este usuario?");
+      if (eliminar == true) {
+        deleteUser(id);
+        alert('SE ELIMINO EL USUARIO CORRECTAMENTE');
+        renderUsersTable();
+      }
+    }
+  </script>
+
+</body>
+
+</html>
+

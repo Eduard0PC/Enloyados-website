@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="img/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Yuji+Mai&family=Rampart+One&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Asimovian&family=Bitcount+Prop+Single:wght@100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  <title>USUARIOS - ENLOYADOS</title>
+</head>
+
+<body>
+  <header class="lados">
+    <div class="logo">
+      <a href="dashboard.html">
+        <img src="img/logo.png" alt="logo">
+        <h1>ENLOYADOS</h1>
+      </a>
+    </div>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <div class="nav" id="navMenu">
+      <a href="users.html">USUARIOS</a>
+      <a href="addmenu.html">MENU</a>
+      <a class="salir" href="#" onclick="logoutUser(); return false;">CERRAR SESIÓN</a>
+    </div>
+  </header>
+
+  <main class="users-page">
+    <h2>AGREGAR USUARIOS</h2>
+
+    <div class="botones lados">
+      <a class="activo" href="users.html">Agregar Usuario</a>
+      <a href="verusers.html">Ver Usuarios</a>
+    </div>
+
+    <form class="users_form" id="users_form" action="#" method="post" onsubmit="return false;">
+
+      <input type="text" name="name" id="name" placeholder="Nombre">
+      <input type="email" name="email" id="email" placeholder="Correo electrónico" required>
+      <input type="password" name="password" id="password" placeholder="Contraseña">
+
+      <button id="btn_add" type="button">Guardar</button>
+    </form>
+
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 ENLOYADOS — Todos los derechos reservados.</p>
+  </footer>
+
+  <script src="js/db.js"></script>
+  <script type="text/javascript">
+    requireAuth();
+
+    $(document).ready(function () {
+      $("#btn_add").click(function () {
+
+        if ($("#name").val().trim() == "") {
+          alert("Escribe el nombre por favor");
+          $("#name").focus();
+          return;
+        }
+
+        if (!$("#email")[0].checkValidity() || $("#email").val().trim() == "") {
+          alert("Escribe tu correo correctamente por favor");
+          $("#email").focus();
+          return;
+        }
+
+        if ($("#password").val().trim() == "") {
+          alert("Escribe la contraseña por favor");
+          $("#password").focus();
+          return;
+        }
+
+        const res = addUser($("#name").val().trim(), $("#email").val().trim(), $("#password").val().trim());
+        alert(res.message);
+        if (res.success) {
+          window.location.href = "verusers.html";
+        }
+      });
+    });
+  </script>
+
+</body>
+
+</html>
+

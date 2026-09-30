@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="img/logo.png">
+
+  <link href="https://fonts.googleapis.com/css2?family=Yuji+Mai&family=Rampart+One&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Asimovian&family=Bitcount+Prop+Single:wght@100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
+
+  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  <title>MENU - ENLOYADOS</title>
+</head>
+
+<body>
+
+  <header class="lados">
+    <div class="logo">
+      <a href="dashboard.html">
+        <img src="img/logo.png" alt="logo">
+        <h1>ENLOYADOS</h1>
+      </a>
+    </div>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <div class="nav" id="navMenu">
+      <a href="users.html">USUARIOS</a>
+      <a href="addmenu.html">MENU</a>
+      <a class="salir" href="#" onclick="logoutUser(); return false;">CERRAR SESIÓN</a>
+    </div>
+  </header>
+
+  <main class="users-page">
+    <h2>AGREGAR PLATILLO</h2>
+
+    <div class="botones lados">
+      <a class="activo" href="addmenu.html">Agregar Platillo</a>
+      <a href="vermenu.html">Ver Menú</a>
+    </div>
+
+    <form class="users_form" id="menu_form" action="#" method="post" enctype="multipart/form-data" onsubmit="return false;">
+
+      <input type="text" name="nombre" id="nombre" placeholder="Nombre del platillo">
+      <input type="text" name="desc" id="desc" placeholder="Descripción">
+
+      <input type="number" name="price" id="price" placeholder="Precio" min="1">
+
+      <label><b>Categoría del platillo</b></label>
+      <select name="categoria" id="categoria">
+        <option value="">Seleccione una categoría</option>
+        <option value="Entrada">Entrada</option>
+        <option value="Plato fuerte">Plato fuerte</option>
+        <option value="Postre">Postre</option>
+        <option value="Bebida">Bebida</option>
+      </select>
+
+      <label><b>Imagen del platillo</b></label>
+      <input type="file" name="img" id="img" accept="image/*" required>
+
+      <button id="btn_add" type="button">Guardar</button>
+    </form>
+
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 ENLOYADOS — Todos los derechos reservados.</p>
+  </footer>
+
+  <script src="js/db.js"></script>
+  <script>
+    requireAuth();
+
+    $(document).ready(function () {
+      $("#btn_add").click(function () {
+
+        const nombre = $("#nombre").val().trim();
+        const desc = $("#desc").val().trim();
+        const price = $("#price").val().trim();
+        const categoria = $("#categoria").val();
+        const fileInput = document.getElementById("img");
+
+        if (nombre == "") {
+          alert("Escribe el nombre del platillo");
+          $("#nombre").focus();
+          return;
+        }
+
+        if (desc == "") {
+          alert("Escribe la descripción");
+          $("#desc").focus();
+          return;
+        }
+
+        if (price == "" || Number(price) <= 0) {
+          alert("Escribe un precio válido");
+          $("#price").focus();
+          return;
+        }
+
+        if (categoria == "") {
+          alert("Selecciona una categoría");
+          $("#categoria").focus();
+          return;
+        }
+
+        if (!fileInput.files || fileInput.files.length === 0) {
+          alert("Selecciona una imagen");
+          return;
+        }
+
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const img = new Image();
+          img.onload = function () {
+            const canvas = document.createElement("canvas");
+            const maxDim = 600;
+            let width = img.width;
+            let height = img.height;
+            if (width > maxDim || height > maxDim) {
+              if (width > height) {
+                height = Math.round((height * maxDim) / width);
+                width = maxDim;
+              } else {
+                width = Math.round((width * maxDim) / height);
+                height = maxDim;
+              }
+            }
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, width, height);
+            const imagePath = canvas.toDataURL("image/jpeg", 0.8);
+
+            const res = addMenuItem(nombre, desc, price, imagePath, categoria);
+            alert(res.message);
+            if (res.success) {
+              window.location.href = "vermenu.html";
+            }
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    });
+  </script>
+
+</body>
+
+</html>
+

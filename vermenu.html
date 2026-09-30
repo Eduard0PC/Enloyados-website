@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="img/logo.png">
+
+  <link href="https://fonts.googleapis.com/css2?family=Yuji+Mai&family=Rampart+One&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Asimovian&family=Bitcount+Prop+Single:wght@100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
+
+  <title>MENÚ - ENLOYADOS</title>
+</head>
+
+<body>
+
+  <header class="lados">
+    <div class="logo">
+      <a href="dashboard.html">
+        <img src="img/logo.png" alt="logo">
+        <h1>ENLOYADOS</h1>
+      </a>
+    </div>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <div class="nav" id="navMenu">
+      <a href="users.html">USUARIOS</a>
+      <a href="addmenu.html">MENU</a>
+      <a class="salir" href="#" onclick="logoutUser(); return false;">CERRAR SESIÓN</a>
+    </div>
+  </header>
+
+  <main class="users-page">
+
+    <h2>LISTA DEL MENÚ</h2>
+
+    <div class="botones lados">
+      <a href="addmenu.html">Agregar Platillo</a>
+      <a class="activo" href="vermenu.html">Ver Menú</a>
+    </div>
+
+    <div class="users_table_cont lados ancho" id="menu-table-container">
+      <!-- Dynamically populated from JS simulated database -->
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 ENLOYADOS — Todos los derechos reservados.</p>
+  </footer>
+
+  <script src="js/db.js"></script>
+  <script>
+    requireAuth();
+
+    document.addEventListener("DOMContentLoaded", function () {
+      renderMenuTable();
+    });
+
+    function renderMenuTable() {
+      const container = document.getElementById("menu-table-container");
+      if (!container) return;
+
+      const menu = getMenu();
+
+      if (menu.length === 0) {
+        container.innerHTML = '<p class="no-registros">No hay registros disponibles.</p>';
+        return;
+      }
+
+      let html = `
+        <table class="users_table">
+          <tr>
+            <th>ID</th>
+            <th>NOMBRE</th>
+            <th>DESCRIPCIÓN</th>
+            <th>PRECIO</th>
+            <th>IMAGEN</th>
+            <th>CATEGORÍA</th>
+            <th>ELIMINAR</th>
+          </tr>
+      `;
+
+      menu.forEach(function (item) {
+        var imageSrc = getImageUrl(item.path);
+
+        html += `
+          <tr>
+            <td>${item.id}</td>
+            <td>${item.nombre}</td>
+            <td>${item.desc}</td>
+            <td>$${item.price}</td>
+            <td>
+              <img src="${imageSrc}" 
+                   alt="Platillo" 
+                   style="width:70px; height:70px; object-fit:cover; border-radius:5px;">
+            </td>
+            <td>${item.categoria}</td>
+            <td>
+              <a href="#" onclick="validar(${item.id}); return false;">
+                <img class="delete" src="img/images.png" alt="eliminar">
+              </a>
+            </td>
+          </tr>
+        `;
+      });
+
+      html += `</table>`;
+      container.innerHTML = html;
+    }
+
+    function validar(id) {
+      var eliminar = confirm("¿Realmente quieres ELIMINAR este platillo?");
+      if (eliminar == true) {
+        deleteMenuItem(id);
+        alert('SE ELIMINO EL PLATILLO CORRECTAMENTE');
+        renderMenuTable();
+      }
+    }
+  </script>
+
+</body>
+
+</html>
+

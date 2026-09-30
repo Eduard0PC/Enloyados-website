@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
   <meta charset="UTF-8">
@@ -21,13 +21,16 @@
         <h1>ENLOYADOS</h1>
       </a>
     </div>
-    <div class="nav">
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <div class="nav" id="navMenu">
       <a href="index.html">HOME</a>
       <a href="menu.html">MENU</a>
       <a href="about.html">QUIENES SOMOS</a>
       <a href="contact.html">CONTACTANOS</a>
+      <a href="login.html" id="nav-login-btn">INICIAR SESIÓN</a>
     </div>
   </header>
+
   <main>
     <div class="banner">
       <div class="banner-cont">
@@ -102,9 +105,12 @@
       </div>
     </div>
   </main>
+
   <footer class="footer">
     <p>© 2025 ENLOYADOS — Todos los derechos reservados.</p>
   </footer>
+
+  <script src="js/db.js"></script>
 </body>
 
 </html>

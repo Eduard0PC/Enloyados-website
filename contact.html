@@ -22,10 +22,13 @@
         <h1>ENLOYADOS</h1>
       </a>
     </div>
-    <div class="nav">
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <div class="nav" id="navMenu">
       <a href="index.html">HOME</a>
       <a href="menu.html">MENU</a>
       <a href="about.html">QUIENES SOMOS</a>
+      <a href="contact.html">CONTACTANOS</a>
+      <a href="login.html" id="nav-login-btn">INICIAR SESIÓN</a>
     </div>
   </header>
 
@@ -34,7 +37,7 @@
       <h1 class="reserv-title">Contáctanos para tu Reservación</h1>
       <p class="reserv-sub">Completa el siguiente formulario y nos pondremos en contacto para confirmar tu lugar.</p>
       <div class="reserv-form-card">
-        <form action="" method="POST" class="reserv-form" id="reserv-form">
+        <form action="" method="POST" class="reserv-form" id="reserv-form" onsubmit="return false;">
 
           <label for="nombre">Nombre completo:</label>
           <input type="text" name="nombre" id="nombre">
@@ -60,46 +63,50 @@
       </div>
     </div>
   </main>
+
   <footer class="footer">
     <p>© 2025 ENLOYADOS — Todos los derechos reservados.</p>
   </footer>
+
+  <script src="js/db.js"></script>
   <script type="text/javascript">
-    $("#btn_reservar").click(function () {
+    $(document).ready(function () {
+      $("#btn_reservar").click(function () {
 
-      if ($("#nombre").val().trim() === "") {
-        alert("Escribe tu nombre por favor");
-        $("#nombre").focus();
-        return;
-      }
+        if ($("#nombre").val().trim() === "") {
+          alert("Escribe tu nombre por favor");
+          $("#nombre").focus();
+          return;
+        }
 
-      if ($("#telefono").val().trim() === "") {
-        alert("Escribe tu teléfono por favor");
-        $("#telefono").focus();
-        return;
-      }
+        if ($("#telefono").val().trim() === "") {
+          alert("Escribe tu teléfono por favor");
+          $("#telefono").focus();
+          return;
+        }
 
-      if ($("#personas").val().trim() === "" || $("#personas").val() <= 0) {
-        alert("Indica el número de personas por favor");
-        $("#personas").focus();
-        return;
-      }
+        if ($("#personas").val().trim() === "" || $("#personas").val() <= 0) {
+          alert("Indica el número de personas por favor");
+          $("#personas").focus();
+          return;
+        }
 
-      if ($("#fecha").val().trim() === "") {
-        alert("Selecciona una fecha por favor");
-        $("#fecha").focus();
-        return;
-      }
+        if ($("#fecha").val().trim() === "") {
+          alert("Selecciona una fecha por favor");
+          $("#fecha").focus();
+          return;
+        }
 
-      if ($("#hora").val().trim() === "") {
-        alert("Selecciona una hora por favor");
-        $("#hora").focus();
-        return;
-      }
-      alert("Reservado correctamente");
-      document.getElementById("reserv-form").submit();
+        if ($("#hora").val().trim() === "") {
+          alert("Selecciona una hora por favor");
+          $("#hora").focus();
+          return;
+        }
+        alert("Reservado correctamente");
+        document.getElementById("reserv-form").reset();
+      });
     });
   </script>
-
 </body>
 
 </html>

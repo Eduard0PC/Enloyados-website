@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="img/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Yuji+Mai&family=Rampart+One&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Asimovian&family=Bitcount+Prop+Single:wght@100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  <title>LOGIN - ENLOYADOS</title>
+</head>
+
+<body>
+  <main class="login-page">
+    <form action="#" method="POST" class="login-form" id="login-form" onsubmit="handleLogin(event)">
+      <h1>Inicia Sesión</h1>
+      <img src="img/logo.png" alt="logo">
+      <label for="email">Nombre de usuario (Correo)</label>
+      <input type="email" name="email" id="email" required placeholder="ejemplo@email.com">
+
+      <label for="password">Contraseña</label>
+      <input type="password" name="password" id="password" required placeholder="Contraseña">
+
+      <button type="submit" id="btn_login">Ingresar</button>
+      <a href="index.html">Volver a la pagina principal</a>
+    </form>
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 ENLOYADOS — Todos los derechos reservados.</p>
+  </footer>
+
+  <script src="js/db.js"></script>
+  <script>
+    if (checkAuth()) {
+      window.location.href = "dashboard.html";
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const email = $("#email").val().trim();
+      const password = $("#password").val().trim();
+
+      if (loginUser(email, password)) {
+        window.location.href = "dashboard.html";
+      } else {
+        alert("Error en la autenticación. Revisa tu correo y contraseña.");
+      }
+    }
+  </script>
+</body>
+
+</html>
+
